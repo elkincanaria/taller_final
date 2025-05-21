@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 
 @Table("cuentas")
-public class Cuentas {
+public class Cuenta {
   @Id
   private Long id;
   private String numeroCuenta;
@@ -72,7 +72,7 @@ public class Cuentas {
     this.estado = estado;
   }
 
-  public Cuentas(Long id, String numeroCuenta, Long bancoId, String tipoCuenta, BigDecimal saldo, BigDecimal saldoSobregiro, String estado) {
+  public Cuenta(Long id, String numeroCuenta, Long bancoId, String tipoCuenta, BigDecimal saldo, BigDecimal saldoSobregiro, String estado) {
     this.id = id;
     this.numeroCuenta = numeroCuenta;
     this.bancoId = bancoId;

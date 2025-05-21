@@ -1,38 +1,37 @@
 package com.example.cuentasservice.service;
 
-package com.example.cuentasservice.service;
 
 import com.example.cuentasservice.dto.BancoDTO;
 import com.example.cuentasservice.dto.CuentaDTO;
-import com.example.cuentasservice.model.Cuentas;
-import com.example.cuentasservice.repository.ICuentasRepository;
+import com.example.cuentasservice.model.Cuenta;
+import com.example.cuentasservice.repository.ICuentaRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class CuentasService {
+public class CuentaService {
 
-    private final ICuentasRepository cuentasRepository;
+    private final ICuentaRepository cuentaRepository;
     private final GetBanco getBanco;
 
-    public CuentasService(ICuentasRepository cuentasRepository, GetBanco getBanco) {
-        this.cuentasRepository = cuentasRepository;
+    public CuentaService(ICuentaRepository cuentaRepository, GetBanco getBanco) {
+        this.cuentaRepository = cuentaRepository;
         this.getBanco = getBanco;
     }
 
-    public Flux<Cuentas> getAll() {
-        return cuentasRepository.findAll();
+    public Flux<Cuenta> getAll() {
+        return cuentaRepository.findAll();
     }
 
-    public Mono<Cuentas> getById(Long cuentaId) {
-        return cuentasRepository.findById(cuentaId);
+    public Mono<Cuenta> getById(Long cuentaId) {
+        return cuentaRepository.findById(cuentaId);
     }
 
-    public Mono<Cuentas> create(CuentaDTO cuentaDTO) {
+    public Mono<Cuenta> create(CuentaDTO cuentaDTO) {
         return getBanco.getBanco(cuentaDTO.getBancoId())
                 .flatMap(banco -> {
-                    Cuentas cuenta = new Cuentas(
+                    Cuenta cuenta = new Cuenta(
                             null,
                             cuentaDTO.getNumeroCuenta(),
                             cuentaDTO.getBancoId(),
@@ -41,13 +40,13 @@ public class CuentasService {
                             cuentaDTO.getSaldoSobregiro(),
                             cuentaDTO.getEstado()
                     );
-                    return cuentasRepository.save(cuenta);
+                    return cuentaRepository.save(cuenta);
                 });
     }
 
-    public Mono<Cuentas> update(Cuentas cuenta) {
-        return cuentasRepository.findById(cuenta.getId())
+    public Mono<Cuenta> update(Cuenta cuenta) {
+        return cuentaRepository.findById(cuenta.getId())
                 .switchIfEmpty(Mono.error(new RuntimeException("Cuenta no encontrada")))
-                .flatMap(existing -> cuentasRepository.save(cuenta));
+                .flatMap(existing -> cuentaRepository.save(cuenta));
     }
 }

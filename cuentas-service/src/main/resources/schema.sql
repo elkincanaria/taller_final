@@ -8,14 +8,14 @@ CREATE TABLE IF NOT EXISTS cuentas (
     estado VARCHAR(2) NOT NULL
 );
 
-INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000001', 1, 'Ahorros', 1500.00, 0.00, ' A')
+INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000001', 1, 'Ahorros', 1500.00, 0.00, ' A');
 
-INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000002', 2, 'Corriente', 500.00, 200.00, ' A')
+INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000002', 2, 'Corriente', 500.00, 200.00, ' A');
 
-INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000003', 1, 'Ahorros', 250.75, 0.00, ' I')
+INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000003', 1, 'Ahorros', 250.75, 0.00, ' I');
 
-INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000004', 3, 'Corriente', 10000.00, 1000.00, ' A')
+INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000004', 3, 'Corriente', 10000.00, 1000.00, ' A');
 
-INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000005', 2, 'Ahorros', 300.00, 0.00, ' C')
+INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000005', 2, 'Ahorros', 300.00, 0.00, ' C');
 
-INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000006', 3, 'Corriente', 0.00, 500.00, ' E')
+INSERT INTO cuentas (numero_cuenta, banco_id, tipo_cuenta, saldo, saldoSobregiro, estado) VALUES ('100000000006', 3, 'Corriente', 0.00, 500.00, ' E');

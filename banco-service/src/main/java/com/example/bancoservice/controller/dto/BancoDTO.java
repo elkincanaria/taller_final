@@ -1,16 +1,15 @@
-package com.example.bancoservice.dto;
-
+package com.example.bancoservice.controller.dto;
 
 public class BancoDTO {
-  private final String name;
-  private final String description;
-  private final String country;
+  private String name;
+  private String description;
+  private String country;
 
   public BancoDTO() {
   }
 
   public BancoDTO(String country, String name, String description) {
-    this.country  = country;
+    this.country = country;
     this.name = name;
     this.description = description;
   }

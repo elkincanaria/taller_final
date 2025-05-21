@@ -1,5 +1,6 @@
 package com.example.bancoservice.controller;
 
+import com.example.bancoservice.controller.dto.BancoDTO;
 import com.example.bancoservice.model.Banco;
 import com.example.bancoservice.service.BancoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class BancoController {
   }
 
   @PostMapping
-  public Mono<Banco> create(@RequestBody BancoDTO banco) {
+  public Mono<Banco> create(@RequestBody BancoDTO bancoDTO) {
     Banco banco = new Banco(null, bancoDTO.getName(), bancoDTO.getDescription(), bancoDTO.getCountry());
     return bancoService.create(banco);
   }
