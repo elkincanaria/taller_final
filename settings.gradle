@@ -1,9 +1,0 @@
-rootProject.name = 'taller_final'
-
-include 'products-service'
-include 'banco-service'
-include 'cuentas-service'
-include 'api-gateway'
-include 'cart-service'
-include 'notifications-service'
-include 'auth-service'
