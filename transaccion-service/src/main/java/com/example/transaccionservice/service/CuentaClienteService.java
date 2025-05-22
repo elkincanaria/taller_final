@@ -15,7 +15,6 @@ public class CuentaClienteService {
     @Value("${account.service.url}")
     private String accountsServiceUrl;
 
-    // Constructor explícito (reemplaza @RequiredArgsConstructor)
     public CuentaClienteService(WebClient.Builder webClientBuilder) {
         this.webClientBuilder = webClientBuilder;
     }
@@ -24,19 +23,19 @@ public class CuentaClienteService {
         return webClientBuilder
                 .build()
                 .get()
-                .uri(accountsServiceUrl + "/api/accounts/" + cuenta)
+                .uri(accountsServiceUrl + "/api/cuentas/" + cuenta)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError,
                         response -> Mono.error(new RuntimeException("Cuenta no existe")))
                 .bodyToMono(CuentaDTO.class);
     }
 
-    public Mono<CuentaDTO> updateCuenta(CuentaDTO account) {
+    public Mono<CuentaDTO> updateCuenta(CuentaDTO cuenta) {
         return webClientBuilder
                 .build()
                 .put()
-                .uri(accountsServiceUrl + "/api/accounts")
-                .bodyValue(account)
+                .uri(accountsServiceUrl + "/api/cuentas")
+                .bodyValue(cuenta)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError,
                         response -> Mono.error(new RuntimeException("cuenta no existe")))

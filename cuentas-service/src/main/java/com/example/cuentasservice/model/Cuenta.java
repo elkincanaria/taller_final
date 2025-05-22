@@ -8,27 +8,18 @@ import java.math.BigDecimal;
 @Table("cuentas")
 public class Cuenta {
   @Id
-  private Long id;
-  private String numeroCuenta;
+  private Long numeroCuenta;
   private Long bancoId;
   private String tipoCuenta;
   private BigDecimal saldo;
   private BigDecimal saldoSobregiro;
   private String estado;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getNumeroCuenta() {
+  public Long getNumeroCuenta() {
     return numeroCuenta;
   }
 
-  public void setNumeroCuenta(String numeroCuenta) {
+  public void setNumeroCuenta(Long numeroCuenta) {
     this.numeroCuenta = numeroCuenta;
   }
 
@@ -72,8 +63,7 @@ public class Cuenta {
     this.estado = estado;
   }
 
-  public Cuenta(Long id, String numeroCuenta, Long bancoId, String tipoCuenta, BigDecimal saldo, BigDecimal saldoSobregiro, String estado) {
-    this.id = id;
+  public Cuenta(Long numeroCuenta, Long bancoId, String tipoCuenta, BigDecimal saldo, BigDecimal saldoSobregiro, String estado) {
     this.numeroCuenta = numeroCuenta;
     this.bancoId = bancoId;
     this.tipoCuenta = tipoCuenta;

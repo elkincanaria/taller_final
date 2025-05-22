@@ -33,7 +33,7 @@ public class TransaccionService {
     }
 
     public Mono<Transaccion> create(Transaccion transaction) {
-        transaction.setId(null);
+        transaction.setNumero_rastreo(null);
         return transactionRepository.save(transaction);
     }
 

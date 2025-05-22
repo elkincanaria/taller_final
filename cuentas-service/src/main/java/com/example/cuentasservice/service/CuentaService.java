@@ -33,7 +33,6 @@ public class CuentaService {
                 .flatMap(banco -> {
                     Cuenta cuenta = new Cuenta(
                             null,
-                            cuentaDTO.getNumeroCuenta(),
                             cuentaDTO.getBancoId(),
                             cuentaDTO.getTipoCuenta(),
                             cuentaDTO.getSaldo(),
@@ -45,7 +44,7 @@ public class CuentaService {
     }
 
     public Mono<Cuenta> update(Cuenta cuenta) {
-        return cuentaRepository.findById(cuenta.getId())
+        return cuentaRepository.findById(cuenta.getNumeroCuenta())
                 .switchIfEmpty(Mono.error(new RuntimeException("Cuenta no encontrada")))
                 .flatMap(existing -> cuentaRepository.save(cuenta));
     }

@@ -10,86 +10,79 @@ import java.time.LocalDateTime;
 public class Transaccion {
 
   @Id
-  private Long id;
-  private String type;
-  private Long accountId;
-  private BigDecimal amount;
-  private String description;
-  private LocalDateTime timestamp;
+  private Long numeroRastreo;
+  private String tipoCuenta;
+  private Long banco;
+  private BigDecimal cuenta;
+  private String tipoTransaccion;
+  private BigDecimal monto;
+  private LocalDateTime fecha;
 
-  // Constructor sin argumentos
-  public Transaccion() {
+  public Long getNumeroRastreo() {
+    return numeroRastreo;
   }
 
-  // Constructor con todos los campos
-  public Transaccion(Long id, String type, Long accountId, BigDecimal amount, String description, LocalDateTime timestamp) {
-    this.id = id;
-    this.type = type;
-    this.accountId = accountId;
-    this.amount = amount;
-    this.description = description;
-    this.timestamp = timestamp;
+  public void setNumeroRastreo(Long numeroRastreo) {
+    this.numeroRastreo = numeroRastreo;
   }
 
-  // Getters y Setters
-
-  public Long getId() {
-    return id;
+  public String getTipoCuenta() {
+    return tipoCuenta;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setTipoCuenta(String tipoCuenta) {
+    this.tipoCuenta = tipoCuenta;
   }
 
-  public String getType() {
-    return type;
+  public Long getBanco() {
+    return banco;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setBanco(Long banco) {
+    this.banco = banco;
   }
 
-  public Long getAccountId() {
-    return accountId;
+  public BigDecimal getCuenta() {
+    return cuenta;
   }
 
-  public void setAccountId(Long accountId) {
-    this.accountId = accountId;
+  public void setCuenta(BigDecimal cuenta) {
+    this.cuenta = cuenta;
   }
 
-  public BigDecimal getAmount() {
-    return amount;
+  public String getTipoTransaccion() {
+    return tipoTransaccion;
   }
 
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
+  public void setTipoTransaccion(String tipoTransaccion) {
+    this.tipoTransaccion = tipoTransaccion;
   }
 
-  public String getDescription() {
-    return description;
+  public BigDecimal getMonto() {
+    return monto;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setMonto(BigDecimal monto) {
+    this.monto = monto;
   }
 
-  public LocalDateTime getTimestamp() {
-    return timestamp;
+  public LocalDateTime getFecha() {
+    return fecha;
   }
 
-  public void setTimestamp(LocalDateTime timestamp) {
-    this.timestamp = timestamp;
+  public void setFecha(LocalDateTime fecha) {
+    this.fecha = fecha;
   }
 
-  @Override
-  public String toString() {
-    return "Transaccion{" +
-            "id=" + id +
-            ", type='" + type + '\'' +
-            ", accountId=" + accountId +
-            ", amount=" + amount +
-            ", description='" + description + '\'' +
-            ", timestamp=" + timestamp +
-            '}';
+  public Transaccion(Long numeroRastreo, String tipoCuenta, Long banco, BigDecimal cuenta, String tipoTransaccion, BigDecimal monto, LocalDateTime fecha) {
+    this.numeroRastreo = numeroRastreo;
+    this.tipoCuenta = tipoCuenta;
+    this.banco = banco;
+    this.cuenta = cuenta;
+    this.tipoTransaccion = tipoTransaccion;
+    this.monto = monto;
+    this.fecha = fecha;
   }
 }
+
+

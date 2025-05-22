@@ -3,20 +3,12 @@ package com.example.cuentasservice.dto;
 import java.math.BigDecimal;
 
 public class CuentaDTO {
-    private String numeroCuenta;
     private Long bancoId;
     private String tipoCuenta;
     private BigDecimal saldo;
     private BigDecimal saldoSobregiro;
     private String estado;
 
-    public String getNumeroCuenta() {
-        return numeroCuenta;
-    }
-
-    public void setNumeroCuenta(String numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-    }
 
     public Long getBancoId() {
         return bancoId;
@@ -58,8 +50,7 @@ public class CuentaDTO {
         this.estado = estado;
     }
 
-    public CuentaDTO(String numeroCuenta, Long bancoId, String tipoCuenta, BigDecimal saldo, BigDecimal saldoSobregiro, String estado) {
-        this.numeroCuenta = numeroCuenta;
+    public CuentaDTO(Long bancoId, String tipoCuenta, BigDecimal saldo, BigDecimal saldoSobregiro, String estado) {
         this.bancoId = bancoId;
         this.tipoCuenta = tipoCuenta;
         this.saldo = saldo;
