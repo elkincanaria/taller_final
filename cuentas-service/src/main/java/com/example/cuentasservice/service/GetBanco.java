@@ -21,11 +21,13 @@ public class GetBanco {
 
   public Mono<BancoDTO> getBanco(Long bancoId) {
     return webClientBuilder
-      .build()
-      .get()
-      .uri(productsServiceUrl + "/api/bancos/" + bancoId)
-      .retrieve()
-      .onStatus(HttpStatusCode::isError, response -> Mono.error(new RuntimeException("Banco no encontrado")))
-      .bodyToMono(BancoDTO.class);
+            .build()
+            .get()
+            .uri(productsServiceUrl + "/api/bancos/" + bancoId)
+            .retrieve()
+            .onStatus(HttpStatusCode::isError, response ->
+                    Mono.error(new RuntimeException("Banco no encontrado")))
+            .bodyToMono(BancoDTO.class)
+            .switchIfEmpty(Mono.error(new RuntimeException("Banco no encontrado")));
   }
 }
