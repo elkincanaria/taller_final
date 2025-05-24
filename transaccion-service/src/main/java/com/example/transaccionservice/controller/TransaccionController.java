@@ -34,7 +34,7 @@ public class TransaccionController {
   @PostMapping
   public Mono<RespuestaTransfDTO> trx(@RequestBody TransaccionDTO trx) {
     return transaccionService.makeTransaccion(trx)
-            .then(Mono.just(new TransferResponseDTO()));
+            .then(Mono.just(new RespuestaTransfDTO()));
   }
 
 }

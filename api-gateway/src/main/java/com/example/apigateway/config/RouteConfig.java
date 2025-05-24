@@ -17,17 +17,25 @@ public class RouteConfig {
   @Bean
   public RouteLocator createRouteLocator(RouteLocatorBuilder builder) {
     return builder.routes()
-      .route("products-service-route", route -> route
-        .path("/api/products/**")
-        .filters(f -> f.filter(filter))
+      .route("banco-service-route", route -> route
+        .path("/api/bancos/**")
+        .filters(f -> f.filters(filter))
         .uri("http://localhost:8081"))
-      .route("carts-service-route", route -> route
-        .path("/api/carts/**")
-        .filters(f -> f.filter(filter))
+      .route("cuentas-service-route", route -> route
+        .path("/api/cuentas/**")
+        .filters(f -> f.filters(filter))
         .uri("http://localhost:8082"))
+      .route("transaccion-service-route", route -> route
+         .path("/api/transaccion/**")
+         .filters(f -> f.filters(filter))
+         .uri("http://localhost:8083"))
+       .route("transferencia-service-route", route -> route
+               .path("/api/transferecia/**")
+               .filters(f -> f.filters(filter))
+               .uri("http://localhost:8084"))
       .route("auth-service-route", route -> route
-        .path("/api/auth/**")
-        .uri("http://localhost:8084"))
-      .build();
+              .path("/api/auth/**")
+              .uri("http://localhost:8085"))
+       .build();
   }
 }

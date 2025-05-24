@@ -15,82 +15,83 @@ import java.time.LocalDateTime;
 @Service
 public class TransaccionService {
 
-    private final ITransaccionRepository transactionRepository;
-    private final CuentaClienteService cuentaclienteservice;
-    private final EventoTransferencia transferEventPublisher;
+    private final ITransaccionRepository iTransaccionRepository;
+    private final CuentaService cuentaservice;
+    private final EventoTransferencia eventoTransferencia;
 
-    // Constructor explícito (sustituye @RequiredArgsConstructor)
-    public TransaccionService(ITransaccionRepository transactionRepository,
-                              CuentaClienteService cuentaclienteservice,
-                              EventoTransferencia transferEventPublisher) {
-        this.transactionRepository = transactionRepository;
-        this.cuentaclienteservice = cuentaclienteservice;
-        this.transferEventPublisher = transferEventPublisher;
+    public TransaccionService(ITransaccionRepository itransaccionRepository,
+                              CuentaService cuentaservice,
+                              EventoTransferencia eventoTransferencia) {
+        this.iTransaccionRepository = itransaccionRepository;
+        this.cuentaservice = cuentaservice;
+        this.eventoTransferencia = eventoTransferencia;
     }
 
     public Flux<Transaccion> getAll() {
-        return transactionRepository.findAll();
+        return iTransaccionRepository.findAll();
     }
 
-    public Mono<Transaccion> create(Transaccion transaction) {
-        transaction.setNumero_rastreo(null);
-        return transactionRepository.save(transaction);
+    public Mono<Transaccion> create(Transaccion transaccion) {
+        transaccion.setNumeroRastreo(null);
+        return iTransaccionRepository.save(transaccion);
     }
 
     public Mono<Void> makeTransaccion(TransaccionDTO transfer) {
         BigDecimal monto = transfer.getMonto();
 
-        return cuentaclienteservice.getCuenta(transfer.getCuentaOrigen())
-                .zipWith(cuentaclienteservice.getCuenta(transfer.getCuentaDestino()))
+        return cuentaservice.getCuenta(transfer.getCuentaOrigen())
+                .zipWith(cuentaservice.getCuenta(transfer.getCuentaDestino()))
                 .flatMap(tuple -> {
-                    CuentaDTO origen = tuple.getT1();
-                    CuentaDTO destino = tuple.getT2();
+                    CuentaDTO ctaorigen = tuple.getT1();
+                    CuentaDTO ctadestino = tuple.getT2();
 
-                    if (origen.getSaldo().compareTo(monto) < 0) {
+                    if (ctaorigen.getSaldo().compareTo(monto) < 0) {
                         return Mono.error(new RuntimeException("Saldo insuficiente para efectuar la transaccion"));
                     }
 
-                    origen.setSaldo(origen.getSaldo().subtract(monto));
-                    Transaccion withdrawal = new Transaccion(
-                            null,
-                            "RETIRO",
-                            origen.getNumeroCuenta(),
+                    ctaorigen.setSaldo(ctaorigen.getSaldo().subtract(monto));
+                    Transaccion debito = new Transaccion(null,
+                            ctaorigen.getTipoCuenta(),
+                            ctaorigen.getBancoId(),
+                            BigDecimal.valueOf(ctaorigen.getNumeroCuenta()),
+                            "D",
                             monto,
-                            "Transferir a " + destino.getNumeroCuenta(),
                             LocalDateTime.now()
                     );
 
-                    if (origen.getBancoId().equals(destino.getBancoId())) {
-                        destino.setSaldo(destino.getSaldo().add(monto));
-                        Transaccion deposit = new Transaccion(
-                                null,
-                                "DEPOSITO",
-                                destino.getNumeroCuenta(),
+                    if (ctaorigen.getBancoId().equals(ctadestino.getBancoId())) {
+                        ctadestino.setSaldo(ctadestino.getSaldo().add(monto));
+                        Transaccion credito = new Transaccion(null,
+                                ctadestino.getTipoCuenta(),
+                                ctadestino.getBancoId(),
+                                BigDecimal.valueOf(ctadestino.getNumeroCuenta()),
+                                "C",
                                 monto,
-                                "Transfer from " + origen.getNumeroCuenta(),
                                 LocalDateTime.now()
                         );
+                        System.out.println("Cuenta recibida: " + ctaorigen.getNumeroCuenta());
+                        System.out.println("Cuenta destino: " + ctadestino.getNumeroCuenta());
 
                         return Mono.when(
-                                cuentaclienteservice.updateCuenta(origen),
-                                transactionRepository.save(withdrawal),
-                                cuentaclienteservice.updateCuenta(destino),
-                                transactionRepository.save(deposit)
+                                cuentaservice.updateCuenta(ctaorigen),
+                                iTransaccionRepository.save(debito),
+                                cuentaservice.updateCuenta(ctadestino),
+                                iTransaccionRepository.save(credito)
                         ).then();
                     } else {
-                        Transaccion deposit = new Transaccion(
-                                null,
-                                "DEPOSITO",
-                                destino.getNumeroCuenta(),
+                        Transaccion credito = new Transaccion(ctadestino.getNumeroCuenta(),
+                                ctadestino.getTipoCuenta(),
+                                ctadestino.getBancoId(),
+                                BigDecimal.valueOf(ctadestino.getNumeroCuenta()),
+                                "C",
                                 monto,
-                                "Interbank transfer from " + origen.getNumeroCuenta(),
                                 LocalDateTime.now()
                         );
 
                         return Mono.when(
-                                cuentaclienteservice.updateCuenta(origen),
-                                transactionRepository.save(withdrawal),
-                                Mono.fromRunnable(() -> transferEventPublisher.publishPurchaseMadeEvent(deposit))
+                                cuentaservice.updateCuenta(ctaorigen),
+                                iTransaccionRepository.save(debito),
+                                Mono.fromRunnable(() -> eventoTransferencia.publicacionEncolada(credito))
                         ).then();
                     }
                 });

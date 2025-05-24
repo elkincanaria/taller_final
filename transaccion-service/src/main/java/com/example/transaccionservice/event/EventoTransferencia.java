@@ -1,39 +1,30 @@
 package com.example.transaccionservice.event;
 
-import com.example.transaccionservice.repository.ITransaccionRepository;
-import io.grpc.stub.StreamObserver;
-import org.springframework.grpc.server.service.GrpcService;
+import com.example.transaccionservice.model.Transaccion;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
+@Service
+public class EventoTransferencia {
 
-@GrpcService
-public class EventoTransferencia extends TransaccionServiceGrpc.TransaccionServiceImplBase {
+    private final RabbitTemplate template;
 
-    private final ITransaccionRepository transaccionRepository;
+    @Value("${rabbit.queue.name}")
+    private String queueName;
 
-    // Constructor explícito (reemplaza @RequiredArgsConstructor)
-    public EventoTransferencia(ITransaccionRepository transaccionRepository) {
-        this.transaccionRepository = transaccionRepository;
+    @Value("${rabbit.exchange.name}")
+    private String exchangeName;
+
+    @Value("${rabbit.routing.key}")
+    private String routingKey;
+
+    public EventoTransferencia(RabbitTemplate template) {
+        this.template = template;
     }
 
-    @Override
-    public void getTransactionsByAccountId(AccountRequest request, StreamObserver<TransactionsResponse> responseObserver) {
-        TransactionsResponse response = TransactionsResponse.newBuilder()
-                .addAllTransactions(
-                        transaccionRepository.findByAccountId(request.getAccountId())
-                                .map(transaction -> Transaction.newBuilder()
-                                        .setId(transaction.getId())
-                                        .setType(transaction.getType())
-                                        .setAccountId(transaction.getAccountId())
-                                        .setAmount(transaction.getAmount().doubleValue())
-                                        .setDescription(transaction.getDescription())
-                                        .setTimestamp(transaction.getTimestamp().toString())
-                                        .build())
-                                .collect(Collectors.toList())
-                                .block()
-                ).build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+    public void publicacionEncolada(Transaccion transaccion) {
+        template.convertAndSend(exchangeName, routingKey, transaccion);
+        System.out.println("Transacción enviada correctamente a la cola");
     }
 }

@@ -1,12 +1,12 @@
 package com.example.authservice.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Table("users")
+@Document("usuarios")
 public class User {
   @Id
-  private Long id;
+  private String id;
   private String username;
   private String password;
   private String role;
@@ -14,18 +14,18 @@ public class User {
   public User() {
   }
 
-  public User(Long id, String username, String password, String role) {
+  public User(String id, String username, String password, String role) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.role = role;
   }
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 

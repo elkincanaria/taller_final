@@ -20,6 +20,7 @@ public class JwtAuthenticationFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        System.out.println("Ejecutando filtro JWT para ruta: " + exchange.getRequest().getPath());
         ServerHttpRequest request = exchange.getRequest();
 
         // Comprobar si el header Authorization está presente
